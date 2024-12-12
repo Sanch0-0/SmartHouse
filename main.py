@@ -77,3 +77,15 @@ o Реализуйте сбор и анализ данных. Например, 
 об активности устройств и строите отчеты по энергопотреблению
 и времени работы каждого устройства.
 '''
+
+from smart_home import *
+
+def main():
+    home = SmartHome
+
+    home.add_devices(Light(brand="Xiaomi", device_name="Smart lamp Gt-76", power_consumption="8V", network_connection="Wi-Fi"))
+
+    # TODO - Реализовать выбивание пробок электрощитка в цикле while. 
+
+if __name__=="__main__":
+    main()
