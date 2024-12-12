@@ -41,7 +41,7 @@ class SmartDevice:
             raise ValueError(f"Device '{self.device_name}' is too energy-consuming!")
         elif not self.power_consumption.isdigit():
             raise ValueError("power_consuption must be an integer!")
-        
+
         if self.network_connection not in appropriate_connections:
             raise ValueError("'network_connection' must be Wi-Fi / Bluetooth / Ethernet")
 
@@ -72,3 +72,30 @@ class SmartDevice:
 
     def perform_action(self):
         print("Device is doing it's job...")
+
+'''
+2. Подклассы для разных устройств
+o Создайте подклассы для различных типов устройств, таких как:
+ Light: устройство, которое может включаться и
+выключаться, а также менять яркость и цвет.
+ Thermostat: устройство, которое регулирует температуру и
+позволяет устанавливать разные режимы.
+ Camera: устройство, которое может записывать видео,
+делать фотографии и отправлять уведомления при
+обнаружении движения.
+o Каждый из этих классов должен реализовать свой вариант метода
+perform_action() для выполнения своих уникальных функций.
+'''
+class Light(SmartDevice):
+    def __init__(self, )
+    pass
+
+
+class Themostat(SmartDevice):
+    pass
+
+
+class Camera(SmartDevice):
+    pass
+
+light1 = Light()
