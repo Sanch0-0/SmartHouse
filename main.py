@@ -81,9 +81,51 @@ o Реализуйте сбор и анализ данных. Например, 
 from smart_home import *
 
 def main():
-    home = SmartHome
+    # Создаем центр уведомлений
+    notification_center = NotificationCenter()
+    notification_center.subscribe("User 1")
+    notification_center.subscribe("User 2")
 
-    home.add_devices(Light(brand="Xiaomi", device_name="Smart lamp Gt-76", power_consumption="8V", network_connection="Wi-Fi"))
+    # Создаем умный дом
+    home = SmartHome()
+
+    # Добавляем устройства
+    devices = [
+        Camera(brand="Arlo", device_name="Arlo Pro 4 Spotlight Camera", power_consumption=6, network_connection="Wi-Fi"),
+        Camera(brand="Ring", device_name="Ring Stick Up Cam Battery", power_consumption=5, network_connection="Wi-Fi"),
+        Camera(brand="Google Nest", device_name="Nest Cam (Battery)", power_consumption=4, network_connection="Wi-Fi"),
+        Camera(brand="Eufy", device_name="Eufy Security SoloCam E40", power_consumption=6, network_connection="Wi-Fi"),
+        Camera(brand="Blink", device_name="Blink Outdoor Camera", power_consumption=5, network_connection="Wi-Fi"),
+        
+        Light(brand="Philips Hue", device_name="White and Color Ambiance Bulb E27", power_consumption=9, network_connection="Wi-Fi"),
+        Light(brand="IKEA", device_name="TRÅDFRI LED Bulb E14 600 lm", power_consumption=8, network_connection="Zigbee"),
+        Light(brand="Xiaomi", device_name="Mi Smart LED Bulb Essential (White and Color)", power_consumption=10, network_connection="Wi-Fi"),
+        Light(brand="TP-Link", device_name="Kasa Smart Wi-Fi Light Bulb", power_consumption=8, network_connection="Wi-Fi"),
+        Light(brand="GE Lighting", device_name="Cync Full Color Smart Bulb", power_consumption=7, network_connection="Bluetooth"),
+        Light(brand="Osram", device_name="SMART+ LED GU10 Spot", power_consumption=6, network_connection="Zigbee"),
+        Light(brand="Nanoleaf", device_name="Nanoleaf Essentials A19 Bulb", power_consumption=7, network_connection="Thread"),
+        Light(brand="LIFX", device_name="LIFX Mini Color and White Wi-Fi Smart Bulb", power_consumption=9, network_connection="Wi-Fi"),
+
+        Thermostat(brand="Google Nest", device_name="Nest Learning Thermostat (3rd Gen)", power_consumption=2000, network_connection="Wi-Fi"),
+        Thermostat(brand="Ecobee", device_name="Ecobee SmartThermostat with Voice Control", power_consumption=1800, network_connection="Wi-Fi"),
+    ]
+
+    # Присоединяем устройства к дому
+    home.add_devices(devices)
+
+    # Подключаем уведомления
+    home.set_notification_center(notification_center)
+
+    # Управляем устройствами
+    home.control_device("Living Room Light", "turn_on")
+    home.control_device("Garage Camera", "turn_on")
+
+    # Имитация обнаружения движения камерой
+    camera.detect_motion()
+
+    # Получение статуса устройств
+    home.status_report()
+
 
     # TODO - Реализовать выбивание пробок электрощитка в цикле while. 
 

@@ -104,7 +104,7 @@ class Light(SmartDevice):
             print(f"Device {self.brand} {self.device_name} is Off. Pleace, turn it On.")
 
 
-class Themostat(SmartDevice):
+class Thermostat(SmartDevice):
     def __init__(self, brand, device_name, power_consumption, network_connection):
         super().__init__(brand, device_name, power_consumption, network_connection)
         self.temperature = 20
@@ -159,3 +159,8 @@ class Camera(SmartDevice):
             print(f"{self.brand} {self.device_name} is recording and ready to detect motion.")
         else:
             print(f"{self.brand} {self.device_name} is Off. Pleace, turn it On and run recording.")
+
+    def detect_motion(self):
+        if self.is_recording:
+            print(f"Camera {self.device_name} on {self._floor} floor has detected some movements!")
+        print("No movements were detected.")
