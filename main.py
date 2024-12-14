@@ -80,6 +80,8 @@ o Реализуйте сбор и анализ данных. Например, 
 
 from smart_home import *
 
+
+
 def main():
     # Создаем центр уведомлений
     notification_center = NotificationCenter()
@@ -116,18 +118,44 @@ def main():
     # Подключаем уведомления
     home.set_notification_center(notification_center)
 
-    # Управляем устройствами
-    home.control_device("Living Room Light", "turn_on")
-    home.control_device("Garage Camera", "turn_on")
-
-    # Имитация обнаружения движения камерой
-    camera.detect_motion()
 
     # Получение статуса устройств
     home.status_report()
 
+    # light.set_schedule("18:00")
+    # thermostat.set_schedule("18:30")
+    # home.check_schedules()
 
-    # TODO - Реализовать выбивание пробок электрощитка в цикле while. 
+
+    try:
+        while True:
+            if not home.check_energy():
+                break
+
+            for device in home._SmartHome__device_list:
+                device.update_battery()
+
+            # Проверка расписания
+            home.check_schedules()
+
+            command = input("Enter command: ")
+            if command == "quit":
+                break
+
+            parts = command.split()
+            if len(parts) < 2:
+                print("Invalid command format.")
+                continue
+
+            cmd, device_name = parts[0], parts[1]
+            param = parts[2] if len(parts) == 3 else None
+            home.control_device(cmd, device_name, param)
+
+            time.sleep(1)
+
+    finally:
+        home.save_log()
+
 
 if __name__=="__main__":
     main()
