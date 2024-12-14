@@ -91,23 +91,23 @@ def main():
 
     # Добавляем устройства
     devices = [
-        Camera(brand="Arlo", device_name="Arlo Pro 4 Spotlight Camera", power_consumption=6, network_connection="Wi-Fi"),
-        Camera(brand="Ring", device_name="Ring Stick Up Cam Battery", power_consumption=5, network_connection="Wi-Fi"),
-        Camera(brand="Google Nest", device_name="Nest Cam (Battery)", power_consumption=4, network_connection="Wi-Fi"),
-        Camera(brand="Eufy", device_name="Eufy Security SoloCam E40", power_consumption=6, network_connection="Wi-Fi"),
-        Camera(brand="Blink", device_name="Blink Outdoor Camera", power_consumption=5, network_connection="Wi-Fi"),
+        Camera(device_name="Arlo Pro 4 Spotlight Camera", power_consumption=6, network_connection="Wi-Fi"),
+        Camera(device_name="Ring Stick Up Cam Battery", power_consumption=5, network_connection="Wi-Fi"),
+        Camera(device_name="Nest Cam (Battery)", power_consumption=4, network_connection="Wi-Fi"),
+        Camera(device_name="Eufy Security SoloCam E40", power_consumption=6, network_connection="Wi-Fi"),
+        Camera(device_name="Blink Outdoor Camera", power_consumption=5, network_connection="Wi-Fi"),
         
-        Light(brand="Philips Hue", device_name="White and Color Ambiance Bulb E27", power_consumption=9, network_connection="Wi-Fi"),
-        Light(brand="IKEA", device_name="TRÅDFRI LED Bulb E14 600 lm", power_consumption=8, network_connection="Zigbee"),
-        Light(brand="Xiaomi", device_name="Mi Smart LED Bulb Essential (White and Color)", power_consumption=10, network_connection="Wi-Fi"),
-        Light(brand="TP-Link", device_name="Kasa Smart Wi-Fi Light Bulb", power_consumption=8, network_connection="Wi-Fi"),
-        Light(brand="GE Lighting", device_name="Cync Full Color Smart Bulb", power_consumption=7, network_connection="Bluetooth"),
-        Light(brand="Osram", device_name="SMART+ LED GU10 Spot", power_consumption=6, network_connection="Zigbee"),
-        Light(brand="Nanoleaf", device_name="Nanoleaf Essentials A19 Bulb", power_consumption=7, network_connection="Thread"),
-        Light(brand="LIFX", device_name="LIFX Mini Color and White Wi-Fi Smart Bulb", power_consumption=9, network_connection="Wi-Fi"),
+        Light(device_name="White and Color Ambiance Bulb E27", power_consumption=9, network_connection="Wi-Fi"),
+        Light(device_name="TRÅDFRI LED Bulb E14 600 lm", power_consumption=8, network_connection="Zigbee"),
+        Light(device_name="Mi Smart LED Bulb Essential (White and Color)", power_consumption=10, network_connection="Wi-Fi"),
+        Light(device_name="Kasa Smart Wi-Fi Light Bulb", power_consumption=8, network_connection="Wi-Fi"),
+        Light(device_name="Cync Full Color Smart Bulb", power_consumption=7, network_connection="Bluetooth"),
+        Light(device_name="SMART+ LED GU10 Spot", power_consumption=6, network_connection="Zigbee"),
+        Light(device_name="Nanoleaf Essentials A19 Bulb", power_consumption=7, network_connection="Thread"),
+        Light(device_name="LIFX Mini Color and White Wi-Fi Smart Bulb", power_consumption=9, network_connection="Wi-Fi"),
 
-        Thermostat(brand="Google Nest", device_name="Nest Learning Thermostat (3rd Gen)", power_consumption=2000, network_connection="Wi-Fi"),
-        Thermostat(brand="Ecobee", device_name="Ecobee SmartThermostat with Voice Control", power_consumption=1800, network_connection="Wi-Fi"),
+        Thermostat(device_name="Nest Learning Thermostat (3rd Gen)", power_consumption=2000, network_connection="Wi-Fi"),
+        Thermostat(device_name="Ecobee SmartThermostat with Voice Control", power_consumption=1800, network_connection="Wi-Fi"),
     ]
 
     # Присоединяем устройства к дому

@@ -31,8 +31,10 @@ class SmartDevice:
         self.power_consumption = power_consumption
         self.network_connection = network_connection.capitalize()
         self._status = "Off"
+        self._battery_level = 100
         self._location = None
         self._floor = None
+        self._notification_center = None
 
     def validate_data(self):
         appropriate_connections = ["Wi-Fi", "Bluetooth", "Ethernet"]
@@ -72,6 +74,10 @@ class SmartDevice:
 
     def perform_action(self):
         print("Device is doing it's job...")
+
+    def send_notification(self, message):
+        if self.notification_center:
+            self.notification_center.send_notification(message)
 
 
 class Light(SmartDevice):

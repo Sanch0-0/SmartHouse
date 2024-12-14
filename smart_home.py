@@ -1,41 +1,9 @@
-'''
-3. Класс SmartHome
-o Создайте класс SmartHome, который будет управлять всеми
-устройствами:
- Храните список всех устройств в доме.
- Создайте методы для добавления и удаления устройств.
- Создайте метод control_device(), который будет находить
-устройство по имени и выполнять для него команду
-(включение, выключение или выполнение действия).
- Реализуйте метод status_report(), который будет выводить
-текущий статус всех устройств, включая их состояние и
-уровень заряда.
-
-4. Обработка событий и уведомлений
-o Реализуйте систему уведомлений, используя паттерн
-"Наблюдатель". Создайте класс NotificationCenter, который будет
-принимать подписчиков (например, пользователей) и отправлять
-уведомления, когда сработает какое-то событие (например,
-обнаружение движения камерой или достижение низкого уровня
-заряда у устройства).
-o Устройства, такие как Camera, должны отправлять уведомления
-при обнаружении движения.
-
-5. Энергосбережение и планирование работы
-o Реализуйте режим энергосбережения для устройств. Например,
-когда уровень заряда устройства падает ниже определенного
-значения, оно должно выключаться автоматически и отправлять
-уведомление о необходимости подзарядки.
-o Добавьте возможность устанавливать расписание для устройств.
-Например, включение света в определенное время или изменение
-температуры.
-'''
 from smart_device import *
 
 class SmartHome:
     def __init__(self):
         self.__device_list = []
-        self.__total_energy = 4000
+        self.__total_energy = 1000
 
     def add_devices(self, devices):
         for device in devices:
@@ -87,9 +55,16 @@ class SmartHome:
         for device in self.__device_list:
             print(device)
 
+    def check_battery(self):
+        if self.battery_level < 15:
+            self.send_notification(f"Low battery for {self.device_name}. Please recharge.")
+        elif self.battery_level == 0:
+            self.turn_off()
+
     def set_notification_center(self, notification_center):
-        for device in self.devices:
-            device.set_notification_center(notification_center)
+        for device in self.__device_list:
+            device.attach_notification_center(notification_center)
+
 
 
 class NotificationCenter:
