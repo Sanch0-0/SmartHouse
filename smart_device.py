@@ -3,7 +3,7 @@ class SmartDevice:
     def __init__(self, device_name, power_consumption, network_connection):
         self.device_name = device_name
         self.power_consumption = power_consumption
-        self.network_connection = network_connection.capitalize()
+        self.network_connection = network_connection
         self._status = "Off"
         self._battery_level = 100
         self._location = None
@@ -28,12 +28,11 @@ class SmartDevice:
 
     def validate_data(self):
         appropriate_connections = ["Wi-Fi", "Bluetooth", "Ethernet"]
-
         if not isinstance(self.power_consumption, int):
             raise ValueError("power_consumption must be an integer!")
         elif self.power_consumption <= 0:
             raise ValueError(f"Device '{self.device_name}' must consume at least 1W!")
-
+            
         if self.network_connection not in appropriate_connections:
             raise ValueError("'network_connection' must be Wi-Fi / Bluetooth / Ethernet")
 
@@ -84,15 +83,24 @@ class SmartDevice:
             if self._battery_level >= 100:
                 self._battery_level = 100
                 self._is_charging = False
-                print(f"{self.device_name} is fully charged.")
+                message = f"{self.device_name} is fully charged."
+                print(message)
+                self.send_notification(message)
         elif self._status == "On":
             self._battery_level -= 0.3
             if self._battery_level <= 0:
                 self._battery_level = 0
                 self.turn_off()
-                print(f"{self.device_name} turned off due to low battery.")
+                message = f"{self.device_name} turned off due to low battery."
+                print(message)
+                self.send_notification(message)
             elif self._battery_level < 15 and not self._is_charging:
-                self.send_notification(f"Low battery for {self.device_name}. Please recharge.")
+                message = f"Low battery for {self.device_name}. Please recharge."
+                print(message)
+                self.send_notification(message)
+
+    def show_battery(self):
+        print(f"{self.device_name} - {self._battery_level}%")
 
     def set_schedule(self, time):
         self._schedule = time

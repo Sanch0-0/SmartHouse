@@ -61,25 +61,24 @@ o Добавьте возможность устанавливать распи�
 Например, включение света в определенное время или изменение
 температуры.
 
-6. Многопоточность
-o Добавьте многопоточность для имитации работы устройств в
-режиме реального времени, например, каждое устройство
-работает в своем потоке, выполняя свои действия (например,
-изменение температуры или периодическая запись видео).
-o Используйте таймеры для имитации периодических событий
-(например, камеры, которые записывают видео каждые 5 минут).
-
-7. Расширенные функции (опционально)
+6. Расширенные функции (опционально)
 o Добавьте интерфейс (например, через командную строку) для
 управления устройствами, так, чтобы пользователь мог вводить
 команды для взаимодействия с системой.
 o Реализуйте сбор и анализ данных. Например, сохраняйте данные
 об активности устройств и строите отчеты по энергопотреблению
 и времени работы каждого устройства.
+
+7. Многопоточность
+o Добавьте многопоточность для имитации работы устройств в
+режиме реального времени, например, каждое устройство
+работает в своем потоке, выполняя свои действия (например,
+изменение температуры или периодическая запись видео).
+o Используйте таймеры для имитации периодических событий
+(например, камеры, которые записывают видео каждые 5 минут).
 '''
 
 from smart_home import *
-
 
 
 def main():
@@ -93,23 +92,23 @@ def main():
 
     # Добавляем устройства
     devices = [
-        Camera(device_name="Arlo Pro 4 Spotlight Camera", power_consumption=6, network_connection="Wi-Fi"),
-        Camera(device_name="Ring Stick Up Cam Battery", power_consumption=5, network_connection="Wi-Fi"),
-        Camera(device_name="Nest Cam (Battery)", power_consumption=4, network_connection="Wi-Fi"),
-        Camera(device_name="Eufy Security SoloCam E40", power_consumption=6, network_connection="Wi-Fi"),
-        Camera(device_name="Blink Outdoor Camera", power_consumption=5, network_connection="Wi-Fi"),
-        
-        Light(device_name="White and Color Ambiance Bulb E27", power_consumption=9, network_connection="Wi-Fi"),
-        Light(device_name="TRÅDFRI LED Bulb E14 600 lm", power_consumption=8, network_connection="Zigbee"),
-        Light(device_name="Mi Smart LED Bulb Essential (White and Color)", power_consumption=10, network_connection="Wi-Fi"),
-        Light(device_name="Kasa Smart Wi-Fi Light Bulb", power_consumption=8, network_connection="Wi-Fi"),
-        Light(device_name="Cync Full Color Smart Bulb", power_consumption=7, network_connection="Bluetooth"),
-        Light(device_name="SMART+ LED GU10 Spot", power_consumption=6, network_connection="Zigbee"),
-        Light(device_name="Nanoleaf Essentials A19 Bulb", power_consumption=7, network_connection="Thread"),
-        Light(device_name="LIFX Mini Color and White Wi-Fi Smart Bulb", power_consumption=9, network_connection="Wi-Fi"),
+        Camera(device_name="Arlo Spotlight Cam", power_consumption=12, network_connection="Wi-Fi"),
+        Camera(device_name="Ring Stick Up Cam", power_consumption=15, network_connection="Wi-Fi"),
+        Camera(device_name="Nest Cam Pro 4", power_consumption=14, network_connection="Wi-Fi"),
+        Camera(device_name="Eufy Security Cam", power_consumption=16, network_connection="Wi-Fi"),
+        Camera(device_name="Blink Outdoor Cam", power_consumption=15, network_connection="Wi-Fi"),
 
-        Thermostat(device_name="Nest Learning Thermostat (3rd Gen)", power_consumption=2000, network_connection="Wi-Fi"),
-        Thermostat(device_name="Ecobee SmartThermostat with Voice Control", power_consumption=1800, network_connection="Wi-Fi"),
+        Light(device_name="Ambiance Bulb E27", power_consumption=9, network_connection="Wi-Fi"),
+        Light(device_name="TRADFRI LED Bulb E14", power_consumption=8, network_connection="Wi-Fi"),
+        Light(device_name="Mi Smart LED Bulb", power_consumption=10, network_connection="Wi-Fi"),
+        Light(device_name="Kasa Smart Light Bulb", power_consumption=8, network_connection="Wi-Fi"),
+        Light(device_name="Cync Smart Bulb", power_consumption=7, network_connection="Bluetooth"),
+        Light(device_name="SMART+ LED GU10 Spot", power_consumption=6, network_connection="Wi-Fi"),
+        Light(device_name="Nanoleaf A19 Bulb", power_consumption=7, network_connection="Bluetooth"),
+        Light(device_name="LIFX Mini Smart Bulb", power_consumption=9, network_connection="Wi-Fi"),
+
+        Thermostat(device_name="Nest Learning Thermostat", power_consumption=2000, network_connection="Wi-Fi"),
+        Thermostat(device_name="Ecobee SmartThermostat", power_consumption=1800, network_connection="Wi-Fi"),
     ]
 
     # Присоединяем устройства к дому
@@ -118,13 +117,8 @@ def main():
     # Подключаем уведомления
     home.set_notification_center(notification_center)
 
-
     # Получение статуса устройств
     home.status_report()
-
-    # light.set_schedule("18:00")
-    # thermostat.set_schedule("18:30")
-    # home.check_schedules()
 
 
     try:
@@ -132,24 +126,10 @@ def main():
             if not home.check_energy():
                 break
 
-            for device in home._SmartHome__device_list:
-                device.update_battery()
-
-            # Проверка расписания
-            home.check_schedules()
-
-            command = input("Enter command: ")
-            if command == "quit":
+            command_input = input("Enter command: ").strip()
+            if command_input.lower() == "quit":
                 break
-
-            parts = command.split()
-            if len(parts) < 2:
-                print("Invalid command format.")
-                continue
-
-            cmd, device_name = parts[0], parts[1]
-            param = parts[2] if len(parts) == 3 else None
-            home.control_device(cmd, device_name, param)
+            home.control_device(command_input)
 
             time.sleep(1)
 
