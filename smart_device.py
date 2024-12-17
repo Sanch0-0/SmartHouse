@@ -77,7 +77,7 @@ class SmartDevice:
             self._is_charging = True
             self.send_notification(f"{self.device_name} is now charging.")
         else:
-            self.send_notification(f"{self.device_name} is already fully charged.")
+            self.send_notification(f"{self.device_name} is already fully charged!")
             self._is_charging = False
 
     def update_battery(self):

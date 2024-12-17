@@ -164,7 +164,7 @@ class SmartHome:
         """Сохраняет лог событий в файл."""
         filename = f"SmartHome.log"
         try:
-            with open(filename, "w") as log_file:
+            with open(filename, "a") as log_file:
                 for entry in self.log:
                     log_file.write(entry + "\n")
             print(f"Log saved to {filename}")
