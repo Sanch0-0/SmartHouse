@@ -79,18 +79,19 @@ o Используйте таймеры для имитации периодич
 '''
 
 from smart_home import *
+import time
 
 
 def main():
-    # Создаем центр уведомлений
-    notification_center = NotificationCenter()
-    notification_center.subscribe("User 1")
-    notification_center.subscribe("User 2")
-
-    # Создаем умный дом
+    # Дом
     home = SmartHome()
+    home.start_battery_drain() 
+    home.start_motion_detection() 
 
-    # Добавляем устройства
+    # Центр уведомлений
+    notification_center = NotificationCenter(home)
+    notification_center.subscribe("Mr Anderson")
+
     devices = [
         Camera(device_name="Arlo Spotlight Cam", power_consumption=12, network_connection="Wi-Fi"),
         Camera(device_name="Ring Stick Up Cam", power_consumption=15, network_connection="Wi-Fi"),
@@ -111,29 +112,25 @@ def main():
         Thermostat(device_name="Ecobee SmartThermostat", power_consumption=1800, network_connection="Wi-Fi"),
     ]
 
-    # Присоединяем устройства к дому
     home.add_devices(devices)
-
-    # Подключаем уведомления
     home.set_notification_center(notification_center)
-
-    # Получение статуса устройств
-    home.status_report()
-
 
     try:
         while True:
             if not home.check_energy():
                 break
 
+            print('')
             command_input = input("Enter command: ").strip()
             if command_input.lower() == "quit":
                 break
+
             home.control_device(command_input)
 
             time.sleep(1)
 
     finally:
+        home.stop_battery_drain() 
         home.save_log()
 
 

@@ -1,6 +1,7 @@
 
 from smart_device import *
 from datetime import datetime
+import threading
 import random
 import time
 
@@ -9,6 +10,9 @@ class SmartHome:
         self.__device_list = []
         self.__total_energy = 10000
         self.log = []
+        self.running_battery = True
+        self.running_camera = True
+
 
     def add_devices(self, devices):
         for device in devices:
@@ -68,23 +72,18 @@ class SmartHome:
 
                 if command == "charge":
                     device.charge()
-                    self.log_event(f"{device_name} started charging.")
 
                 elif command == "turn_on":
                     device.turn_on()
-                    self.log_event(f"{device_name} turned ON.")
 
                 elif command == "turn_off":
                     device.turn_off()
-                    self.log_event(f"{device_name} turned OFF.")
 
                 elif command == "start_recording":
                     device.start_recording()
-                    self.log_event(f"{device_name} started recording.")
 
                 elif command == "stop_recording":
                     device.stop_recording()
-                    self.log_event(f"{device_name} stopped recording.")
 
                 elif command == "change_temperature":
                     if len(params) >= 1:
@@ -100,7 +99,6 @@ class SmartHome:
                     if len(params) >= 1:
                         try:
                             device.change_brightness(int(params[0]))
-                            self.log_event(f"{device_name} brightness set to {params[0]}.")
                         except ValueError:
                             print("Error: Brightness level must be an integer.")
                     else:
@@ -108,25 +106,21 @@ class SmartHome:
 
                 elif command == "perform_action":
                     device.perform_action()
-                    self.log_event(f"{device_name} performed action.")
 
                 elif command == "set_schedule":
                     if len(params) >= 1:
                         device.set_schedule(params[0])
-                        self.log_event(f"{device_name} schedule set to {params[0]}.")
                     else:
                         print("Schedule time is required for this command.")
 
                 elif command == "show_battery":
                     device.show_battery()
-                    self.log_event(f"{device_name} battery checked.")
 
                 elif command == "set_location":
                     if len(params) >= 2:
                         try:
                             location, floor = params[0], int(params[1])
                             device.set_location(location.strip(), floor)
-                            self.log_event(f"{device_name} location set to {location} on floor {floor}.")
                         except ValueError:
                             print("Error: Floor must be an integer.")
                     else:
@@ -176,6 +170,35 @@ class SmartHome:
             print(f"Log saved to {filename}")
         except Exception as e:
             print(f"Error saving log: {e}")
+
+    def start_battery_drain(self):
+        """Запускает фоновый процесс обновления батареи устройств."""
+        def drain_battery():
+            while self.running_battery:
+                for device in self.__device_list:
+                    device.update_battery()
+                time.sleep(1)  
+
+        # Запуск отдельного потока для обновления батарей
+        threading.Thread(target=drain_battery, daemon=True).start()
+
+    def stop_battery_drain(self):
+        self.running_battery = False
+
+    def start_motion_detection(self):
+        """Запускает  detect_motion для камер с _is_recording == True с шансом 5%"""
+        def detect_motion_for_cameras():
+            while self.running_camera:
+                for device in self.__device_list:
+                    if isinstance(device, Camera) and device._is_recording: 
+                        if random.randint(1, 100) <= 5:  # 5% шанс
+                            device.detect_motion()
+                time.sleep(1)  
+
+        threading.Thread(target=detect_motion_for_cameras, daemon=True).start()
+
+    def stop_motion_detection(self):
+        self.running_camera = False
 
     def help(self):
         help_message = '''
@@ -235,7 +258,8 @@ Available commands:
 
 
 class NotificationCenter:
-    def __init__(self):
+    def __init__(self, home):
+        self.home = home
         self.subscribers = []
 
     def subscribe(self, subscriber):
@@ -245,3 +269,4 @@ class NotificationCenter:
     def send_notification(self, message):
         for subscriber in self.subscribers:
             print(f"Notification to {subscriber}: {message}")
+            self.home.log_event(f"User '{subscriber}' got message: {message}")
